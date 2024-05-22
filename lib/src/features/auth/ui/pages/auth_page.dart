@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:roupaspet/src/core/extensions/extensions.dart';
 import 'package:roupaspet/src/core/ui/styles/styles.dart';
 import 'package:roupaspet/src/core/ui/widgets/widgets.dart';
+
+import '../../../../app_paths.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -36,8 +39,14 @@ class AuthPage extends StatelessWidget {
               hintText: 'Digite sua senha',
             ),
           ),
-          ElevatedButton(onPressed: () {}, child: const Text('Entrar')),
-          OutlinedButton(onPressed: () {}, child: const Text('Criar Conta'))
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Entrar'),
+          ),
+          OutlinedButton(
+            onPressed: () => Modular.to.pushNamed(paths.createAccount),
+            child: const Text('Criar Conta'),
+          )
         ],
       ).applySpacing(spacing: 16).margin(const EdgeInsets.all(24)),
     );

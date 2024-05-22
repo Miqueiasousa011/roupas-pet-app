@@ -1,8 +1,7 @@
 final paths = (
   root: '/',
-  auth: '/auth/',
-  login: '/auth/login',
-  createAccount: '/auth/createAccount',
+  auth: '/',
+  createAccount: '/reateAccount',
   search: '/search/',
   listVideo: '/search/list-video',
   openVideo: '/search/open-video',
