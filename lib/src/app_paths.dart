@@ -1,17 +1,7 @@
-final paths = (
-  root: '/',
+const paths = (
   auth: '/',
   createAccount: '/reateAccount',
-  search: '/search/',
-  listVideo: '/search/list-video',
-  openVideo: '/search/open-video',
-  libraty: '/library/',
-  account: '/account/',
-  profile: '/account/profile',
-  appearance: '/account/appearance',
-  language: '/account/language',
-  abount: '/account/abount',
-  termsOfUse: '/account/termsOfUse',
-  privacyPolicy: '/account/privacyPolicy',
-  collaboratorsEdit: (int id) => '/collaborators/edit/$id',
+  main: '/home/main',
+  orders: '/home/orders',
+  profile: '/home/profile',
 );

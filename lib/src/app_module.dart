@@ -1,10 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:roupaspet/src/app_paths.dart';
 import 'package:roupaspet/src/core/services/local_storage/shared_preferences_service.dart';
 
 import 'core/services/http/dio_service.dart';
 import 'core/services/http/http_service.dart';
 import 'core/services/local_storage/local_storage_service.dart';
 import 'features/auth/auth_module.dart';
+import 'features/home/home_module.dart';
 
 class AppModule extends Module {
   @override
@@ -20,6 +22,11 @@ class AppModule extends Module {
         ModuleRoute(
           '/',
           module: AuthModule(),
+          transition: TransitionType.noTransition,
+        ),
+        ModuleRoute(
+          paths.main,
+          module: HomeModule(),
           transition: TransitionType.noTransition,
         ),
       ];
