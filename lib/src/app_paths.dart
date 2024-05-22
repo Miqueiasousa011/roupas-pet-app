@@ -1,0 +1,18 @@
+final paths = (
+  root: '/',
+  auth: '/auth/',
+  login: '/auth/login',
+  createAccount: '/auth/createAccount',
+  search: '/search/',
+  listVideo: '/search/list-video',
+  openVideo: '/search/open-video',
+  libraty: '/library/',
+  account: '/account/',
+  profile: '/account/profile',
+  appearance: '/account/appearance',
+  language: '/account/language',
+  abount: '/account/abount',
+  termsOfUse: '/account/termsOfUse',
+  privacyPolicy: '/account/privacyPolicy',
+  collaboratorsEdit: (int id) => '/collaborators/edit/$id',
+);
