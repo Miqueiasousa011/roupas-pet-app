@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:roupaspet/src/app_paths.dart';
 
-import 'models/navigation_model.dart';
+import '../models/navigation_model.dart';
 import 'navigation_state.dart';
 
 class NavigationCubit extends Cubit<NavidationState> {
@@ -17,7 +17,7 @@ class NavigationCubit extends Cubit<NavidationState> {
       NavigationModel(
         title: 'Home',
         icon: Icons.home_outlined,
-        path: paths.main,
+        path: paths.home,
       ),
       NavigationModel(
         title: 'Pedidos',

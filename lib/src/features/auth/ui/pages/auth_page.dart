@@ -40,7 +40,7 @@ class AuthPage extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () => Modular.to.pushNamed(paths.main),
+            onPressed: () => Modular.to.pushNamed(paths.home),
             child: const Text('Entrar'),
           ),
           OutlinedButton(

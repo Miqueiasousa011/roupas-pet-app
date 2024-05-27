@@ -6,7 +6,7 @@ import 'core/services/http/dio_service.dart';
 import 'core/services/http/http_service.dart';
 import 'core/services/local_storage/local_storage_service.dart';
 import 'features/auth/auth_module.dart';
-import 'features/home/home_module.dart';
+import 'features/main/main_module.dart';
 
 class AppModule extends Module {
   @override
@@ -26,7 +26,7 @@ class AppModule extends Module {
         ),
         ModuleRoute(
           paths.main,
-          module: HomeModule(),
+          module: MainModule(),
           transition: TransitionType.noTransition,
         ),
       ];
