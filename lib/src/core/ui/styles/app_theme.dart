@@ -57,7 +57,7 @@ class AppTheme {
         errorBorderColor: colors.error,
         focusedBorderColor: colors.main,
         errorFocusedBorderColor: colors.error,
-        enabledBorderColor: colors.main,
+        enabledBorderColor: colors.primary70,
         disabledBorderColor: colors.main,
       ),
       textTheme: GoogleFonts.montserratTextTheme(),
