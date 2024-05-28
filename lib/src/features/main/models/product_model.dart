@@ -32,7 +32,7 @@ class ProductModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name, description, price, image, stock, category];
+  List<Object?> get props => [id];
 }
 
 class CategoryModel {

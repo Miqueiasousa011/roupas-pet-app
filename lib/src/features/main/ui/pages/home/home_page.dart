@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart' as fm;
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:roupaspet/src/core/extensions/extensions.dart';
 import 'package:roupaspet/src/core/extensions/string_ext.dart';
 import 'package:roupaspet/src/core/ui/widgets/widgets.dart';
@@ -161,7 +162,7 @@ class ShoppingCartFabButton extends StatelessWidget {
       children: [
         FloatingActionButton(
           backgroundColor: context.colors.main,
-          onPressed: () {},
+          onPressed: () => Modular.to.pushNamed('/main/home/shopping-cart'),
           child: const Icon(Icons.shopping_cart_outlined),
         ),
         BlocBuilder<ShoppingCartCubit, ShoppingCartState>(

@@ -24,5 +24,5 @@ class OrderItemModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [product, quantity];
+  List<Object?> get props => [product];
 }

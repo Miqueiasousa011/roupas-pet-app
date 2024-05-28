@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:roupaspet/src/features/main/controllers/products/products_cubit.dart';
 import 'package:roupaspet/src/features/main/repositories/product_repository.dart';
+import 'package:roupaspet/src/features/main/ui/pages/home/shopping_cart_page.dart';
 
 import 'controllers/navigation/navigation_cubit.dart';
 import 'controllers/shopping_cart/shopping_cart_cubit.dart';
@@ -31,6 +32,10 @@ class MainModule extends Module {
             ChildRoute(
               '/home/product',
               child: (_, args) => ProductPage(product: args.data),
+            ),
+            ChildRoute(
+              '/home/shopping-cart',
+              child: (_, args) => const ShoppingCartPage(),
             ),
           ],
         ),

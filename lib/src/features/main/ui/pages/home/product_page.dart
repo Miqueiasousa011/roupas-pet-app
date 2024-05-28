@@ -6,11 +6,17 @@ import 'package:roupaspet/src/features/main/controllers/shopping_cart/shopping_c
 import 'package:roupaspet/src/features/main/models/order_item_model.dart';
 import 'package:roupaspet/src/features/main/models/product_model.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage({super.key, required this.product});
 
   final ProductModel product;
 
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  int total = 1;
   @override
   Widget build(BuildContext context) {
     final shoppingCartCubit = Modular.get<ShoppingCartCubit>();
@@ -20,7 +26,7 @@ class ProductPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            product.name,
+            widget.product.name,
             style: context.textTheme.titleMedium!.copyWith(
               color: context.colors.primary100,
               fontWeight: FontWeight.bold,
@@ -35,32 +41,76 @@ class ProductPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Image.network(
-                product.image,
+                widget.product.image,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 400,
               ),
               Text(
-                product.name,
+                widget.product.name,
                 style: context.textTheme.titleLarge!.copyWith(
                   color: context.colors.primary100,
                 ),
               ).margin(const EdgeInsets.symmetric(horizontal: 16)),
               Text(
-                product.description,
+                widget.product.description,
                 style: context.textTheme.titleMedium!.copyWith(
                   color: context.colors.primary80,
                 ),
               ).margin(const EdgeInsets.symmetric(horizontal: 16)),
               Text(
-                '${product.price.toBRL} ',
+                '${widget.product.price.toBRL} ',
                 style: context.textTheme.titleMedium!.copyWith(
                   color: context.colors.primary80,
                 ),
               ).margin(const EdgeInsets.symmetric(horizontal: 16)),
+              Row(
+                children: [
+                  Text(
+                    'Quantidade: ',
+                    style: context.textTheme.titleMedium!.copyWith(
+                      color: context.colors.primary80,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  DropdownButton<int>(
+                    value: total,
+                    items: List.generate(
+                      10,
+                      (index) => DropdownMenuItem(
+                        value: index + 1,
+                        child: Text(
+                          '${index + 1}',
+                          style: context.textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: context.colors.primary80,
+                          ),
+                        ),
+                      ),
+                    ),
+                    onChanged: (e) {
+                      setState(() {
+                        if (e != null) total = e;
+                      });
+                    },
+                  ),
+                ],
+              ).margin(const EdgeInsets.symmetric(horizontal: 16)),
               ElevatedButton(
                 onPressed: () {
-                  shoppingCartCubit.addProduct(OrderItemModel(product: product, quantity: 1));
+                  if (shoppingCartCubit.state.items
+                      .map((e) => e.product)
+                      .contains(widget.product)) {
+                    context.showErrorSnackbar('Produto já adicionado ao carrinho');
+                    return;
+                  }
+
+                  shoppingCartCubit.addProduct(
+                    OrderItemModel(
+                      product: widget.product,
+                      quantity: total,
+                    ),
+                  );
                   Navigator.pop(context);
                   context.showSuccessSnackbar('Produto adicionado ao carrinho');
                 },
