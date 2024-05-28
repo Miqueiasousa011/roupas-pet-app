@@ -13,33 +13,21 @@ final class SharedPreferencesService implements LocalStorageService {
   }
 
   @override
+  Future<bool> exists(String key) async {
+    final prefs = await _getInstance();
+    return prefs.containsKey(key);
+  }
+
+  @override
   Future<T?> get<T extends Object?>(String key) async {
     if (!await exists(key)) return null;
     final prefs = await _getInstance();
 
-    switch (T) {
-      case const (String):
-        {
-          return prefs.getString(key) as T;
-        }
-      case const (int):
-        {
-          return prefs.getInt(key) as T;
-        }
-      case const (double):
-        {
-          return prefs.getDouble(key) as T;
-        }
-      case const (bool):
-        {
-          return prefs.getBool(key) as T;
-        }
-      case const (List<String>):
-        {
-          return prefs.getStringList(key) as T;
-        }
-    }
-    return null;
+    final value = prefs.get(key);
+
+    if (value is! T) return null;
+
+    return value;
   }
 
   @override
@@ -78,17 +66,10 @@ final class SharedPreferencesService implements LocalStorageService {
           await prefs.setStringList(key, value as List<String>);
           break;
         }
-
       default:
         {
           throw UnsupportedError('Unsupported type $T!');
         }
     }
-  }
-
-  @override
-  Future<bool> exists(String key) async {
-    final prefs = await _getInstance();
-    return prefs.containsKey(key);
   }
 }

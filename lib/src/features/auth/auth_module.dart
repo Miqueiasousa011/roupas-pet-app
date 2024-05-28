@@ -13,7 +13,7 @@ class AuthModule extends Module {
   List<Bind> get binds => [
         Bind.factory<AccountRepository>((i) => AccountRepositoryImp(i.get())),
         Bind.singleton<AddAccountCubit>((i) => AddAccountCubit(i())),
-        Bind.singleton<LoginCubit>((i) => LoginCubit(i())),
+        Bind.singleton<LoginCubit>((i) => LoginCubit(i(), i())),
       ];
 
   @override

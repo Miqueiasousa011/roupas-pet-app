@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:roupaspet/src/core/extensions/extensions.dart';
 
-import '../../controllers/navigation_cubit.dart';
-import '../../controllers/navigation_state.dart';
+import '../../controllers/navigation/navigation_cubit.dart';
+import '../../controllers/navigation/navigation_state.dart';
 
 class BottomNavigationComponent extends StatelessWidget {
   const BottomNavigationComponent({super.key});

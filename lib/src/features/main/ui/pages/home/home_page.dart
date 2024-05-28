@@ -1,10 +1,32 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:roupaspet/src/core/extensions/extensions.dart';
+import 'package:roupaspet/src/core/extensions/string_ext.dart';
 import 'package:roupaspet/src/core/ui/widgets/widgets.dart';
+import 'package:roupaspet/src/features/main/controllers/products/product_state.dart';
+import 'package:roupaspet/src/features/main/controllers/products/products_cubit.dart';
+import 'package:roupaspet/src/features/main/models/product_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late ProductCubit _productCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _productCubit = Modular.get<ProductCubit>();
+
+    scheduleMicrotask(() => _productCubit.getProducts());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +50,33 @@ class HomePage extends StatelessWidget {
               ),
             ).margin(const EdgeInsets.symmetric(horizontal: 24)),
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(24),
-                itemCount: 10,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.66, // Relação de aspecto (largura / altura)
-                  mainAxisSpacing: 10.0, // Espaçamento entre os elementos na direção principal
-                  crossAxisSpacing: 10.0, // Espaçamento entre os elementos na direção cruzada
-                ),
-                itemBuilder: (context, index) => const Product(),
+              child: BlocBuilder<ProductCubit, ProductState>(
+                bloc: _productCubit,
+                builder: (context, state) {
+                  if (state is SuccessState) {
+                    return GridView.builder(
+                      padding: const EdgeInsets.all(24),
+                      itemCount: state.products.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 180 / 200,
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                      ),
+                      itemBuilder: (context, index) => Product(
+                        product: state.products[index],
+                      ),
+                    );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: context.colors.main,
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 40),
           ],
         ).applySpacing(spacing: 16),
         floatingActionButton: const ShoppingCartFabButton(),
@@ -50,17 +86,29 @@ class HomePage extends StatelessWidget {
 }
 
 class Product extends StatelessWidget {
-  const Product({super.key});
+  const Product({super.key, required this.product});
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 180,
+      height: 200,
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: context.colors.nutral10,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: context.colors.nutral20,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Material(
@@ -70,17 +118,21 @@ class Product extends StatelessWidget {
                 onTap: () {
                   Modular.to.pushNamed('/main/home/product');
                 },
-                child: Container(),
+                child: Image.network(
+                  product.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 5),
           Text(
-            'Nome do produto',
+            product.name,
             style: context.textTheme.bodyLarge!.copyWith(color: context.colors.main),
+            maxLines: 1,
           ),
           Text(
-            'R\$ 100,00',
+            product.price.toBRL,
             style: context.textTheme.bodyLarge!.copyWith(color: context.colors.main),
           ),
         ],
