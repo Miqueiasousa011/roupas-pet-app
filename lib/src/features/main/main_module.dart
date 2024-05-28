@@ -3,6 +3,7 @@ import 'package:roupaspet/src/features/main/controllers/products/products_cubit.
 import 'package:roupaspet/src/features/main/repositories/product_repository.dart';
 
 import 'controllers/navigation/navigation_cubit.dart';
+import 'controllers/shopping_cart/shopping_cart_cubit.dart';
 import 'repositories/product_repository_imp.dart';
 import 'ui/pages/home/home_page.dart';
 import 'ui/pages/home/product_page.dart';
@@ -14,6 +15,7 @@ class MainModule extends Module {
         Bind.factory<ProductRepository>((i) => ProductRepositoryImp(i())),
         Bind.singleton<ProductCubit>((i) => ProductCubit(i())),
         Bind.singleton<NavigationCubit>((i) => NavigationCubit()),
+        Bind.singleton<ShoppingCartCubit>((i) => ShoppingCartCubit()),
       ];
 
   @override
@@ -28,7 +30,7 @@ class MainModule extends Module {
             ),
             ChildRoute(
               '/home/product',
-              child: (_, __) => const ProductPage(),
+              child: (_, args) => ProductPage(product: args.data),
             ),
           ],
         ),
