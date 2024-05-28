@@ -4,6 +4,7 @@ import 'package:roupaspet/src/core/extensions/extensions.dart';
 import 'package:roupaspet/src/core/extensions/string_ext.dart';
 import 'package:roupaspet/src/features/main/controllers/shopping_cart/shopping_cart_cubit.dart';
 import 'package:roupaspet/src/features/main/models/order_item_model.dart';
+import 'package:roupaspet/src/features/main/ui/pages/home/finalize_order_page.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({
@@ -56,10 +57,26 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             },
           );
         }),
-        bottomNavigationBar: ElevatedButton(
-          onPressed: () {},
-          child: const Text('Finalizar Pedido'),
-        ).margin(const EdgeInsets.symmetric(horizontal: 16)),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Valor total: ${shoppingCartCubit.state.total.toBRL}',
+              style: context.textTheme.titleMedium!.copyWith(
+                color: context.colors.primary100,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.start,
+            ).margin(const EdgeInsets.symmetric(horizontal: 16)),
+            ElevatedButton(
+              onPressed: () {
+                context.showPopup(child: const FinalizeOrderPage());
+              },
+              child: const Text('Finalizar Pedido'),
+            ).margin(const EdgeInsets.symmetric(horizontal: 16)),
+          ],
+        ).applySpacing(spacing: 10),
       ),
     );
   }

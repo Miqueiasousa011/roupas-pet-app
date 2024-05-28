@@ -76,15 +76,17 @@ class _ProductPageState extends State<ProductPage> {
                   DropdownButton<int>(
                     value: total,
                     items: List.generate(
-                      10,
+                      5,
                       (index) => DropdownMenuItem(
                         value: index + 1,
+                        alignment: Alignment.center,
                         child: Text(
                           '${index + 1}',
                           style: context.textTheme.titleMedium!.copyWith(
                             fontWeight: FontWeight.w600,
                             color: context.colors.primary80,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
