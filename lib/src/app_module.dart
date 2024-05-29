@@ -6,6 +6,7 @@ import 'core/services/http/dio_service.dart';
 import 'core/services/http/http_service.dart';
 import 'core/services/local_storage/local_storage_service.dart';
 import 'features/auth/auth_module.dart';
+import 'features/main/controllers/shopping_cart/shopping_cart_cubit.dart';
 import 'features/main/main_module.dart';
 
 class AppModule extends Module {
@@ -15,6 +16,7 @@ class AppModule extends Module {
         Bind.factory<HttpService>(
           (i) => DioService(const String.fromEnvironment('BASE_URL'), i.get()),
         ),
+        Bind.singleton<ShoppingCartCubit>((i) => ShoppingCartCubit()),
       ];
 
   @override

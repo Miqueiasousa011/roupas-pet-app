@@ -56,73 +56,71 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> with UtilsMixin {
           context.showSuccessSnackbar('Pedido finalizado com sucesso');
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text(
-              'Carrinho',
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            'Carrinho',
+            style: context.textTheme.titleMedium!.copyWith(
+              color: context.colors.primary100,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          iconTheme: IconThemeData(
+            color: context.colors.primary100,
+          ),
+        ),
+        body: Builder(builder: (context) {
+          if (shoppingCartCubit.state.items.isEmpty) {
+            return Center(
+              child: Text(
+                'Carrinho vazio',
+                style: context.textTheme.titleLarge!.copyWith(color: context.colors.primary90),
+              ),
+            );
+          }
+
+          return ListView.separated(
+            itemCount: shoppingCartCubit.state.items.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            itemBuilder: (context, index) {
+              final item = shoppingCartCubit.state.items[index];
+              return ProductCardInLine(
+                onRemove: () => setState(() => shoppingCartCubit.removeProduct(item)),
+                item: item,
+              );
+            },
+          );
+        }),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Valor total: ${shoppingCartCubit.state.total.toBRL}',
               style: context.textTheme.titleMedium!.copyWith(
                 color: context.colors.primary100,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            iconTheme: IconThemeData(
-              color: context.colors.primary100,
-            ),
-          ),
-          body: Builder(builder: (context) {
-            if (shoppingCartCubit.state.items.isEmpty) {
-              return Center(
-                child: Text(
-                  'Carrinho vazio',
-                  style: context.textTheme.titleLarge!.copyWith(color: context.colors.primary90),
-                ),
-              );
-            }
-
-            return ListView.separated(
-              itemCount: shoppingCartCubit.state.items.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final item = shoppingCartCubit.state.items[index];
-                return ProductCardInLine(
-                  onRemove: () => setState(() => shoppingCartCubit.removeProduct(item)),
-                  item: item,
-                );
+              textAlign: TextAlign.start,
+            ).margin(const EdgeInsets.symmetric(horizontal: 16)),
+            ElevatedButton(
+              onPressed: () async {
+                if (shoppingCartCubit.state.items.isEmpty) {
+                  context.showErrorSnackbar(
+                    'Adicione produtos ao carrinho para finalizar o pedido',
+                  );
+                  return;
+                }
+                final result = await context.showPopup(child: const FinalizeOrderPage());
+                if (result != null) {
+                  orderCubit.finalizeOrder(shoppingCartCubit.state.items, result, 100.0);
+                }
               },
-            );
-          }),
-          bottomNavigationBar: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Valor total: ${shoppingCartCubit.state.total.toBRL}',
-                style: context.textTheme.titleMedium!.copyWith(
-                  color: context.colors.primary100,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.start,
-              ).margin(const EdgeInsets.symmetric(horizontal: 16)),
-              ElevatedButton(
-                onPressed: () async {
-                  if (shoppingCartCubit.state.items.isEmpty) {
-                    context.showErrorSnackbar(
-                      'Adicione produtos ao carrinho para finalizar o pedido',
-                    );
-                    return;
-                  }
-                  final result = await context.showPopup(child: const FinalizeOrderPage());
-                  if (result != null) {
-                    orderCubit.finalizeOrder(shoppingCartCubit.state.items, result, 100.0);
-                  }
-                },
-                child: const Text('Finalizar Pedido'),
-              ).margin(const EdgeInsets.symmetric(horizontal: 16)),
-            ],
-          ).applySpacing(spacing: 10),
-        ),
+              child: const Text('Finalizar Pedido'),
+            ).margin(const EdgeInsets.symmetric(horizontal: 16)),
+          ],
+        ).applySpacing(spacing: 10),
       ),
     );
   }

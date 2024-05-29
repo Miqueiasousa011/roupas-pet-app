@@ -22,6 +22,10 @@ class OrderError extends OrderState {
 }
 
 class OrderSuccess extends OrderState {
+  final List<OrderModel> orders;
+
+  OrderSuccess([this.orders = const []]);
+
   @override
   List<Object?> get props => [];
 }

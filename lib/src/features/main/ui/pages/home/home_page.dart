@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart' as fm;
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:roupaspet/src/app_paths.dart';
 import 'package:roupaspet/src/core/extensions/extensions.dart';
 import 'package:roupaspet/src/core/extensions/string_ext.dart';
-import 'package:roupaspet/src/core/ui/widgets/widgets.dart';
 import 'package:roupaspet/src/features/main/controllers/products/product_state.dart';
 import 'package:roupaspet/src/features/main/controllers/products/products_cubit.dart';
 import 'package:roupaspet/src/features/main/models/product_model.dart';
@@ -34,60 +34,76 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    fm.Modular.dispose<ShoppingCartCubit>();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<ShoppingCartCubit>(
       create: (context) => _shoppingCartCubit,
-      child: SafeArea(
-        child: Scaffold(
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
             children: [
-              InputWidget.text(
-                hintText: 'Buscar produtos',
-                suffixIcon: Icon(
-                  Icons.search_outlined,
-                  color: context.colors.main,
-                ),
-              ).margin(const EdgeInsets.symmetric(horizontal: 24)),
+              Image.asset(
+                'assets/images/logo.png',
+                width: 25,
+              ),
+              const SizedBox(width: 8), // 8
               Text(
-                'Produtos',
-                style: context.textTheme.titleMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.colors.primary80,
-                ),
-              ).margin(const EdgeInsets.symmetric(horizontal: 24)),
-              Expanded(
-                child: BlocBuilder<ProductCubit, ProductState>(
-                  bloc: _productCubit,
-                  builder: (context, state) {
-                    if (state is SuccessState) {
-                      return GridView.builder(
-                        padding: const EdgeInsets.all(24),
-                        itemCount: state.products.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 180 / 200,
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10.0,
-                        ),
-                        itemBuilder: (context, index) => Product(
-                          product: state.products[index],
-                        ),
-                      );
-                    }
-
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: context.colors.main,
-                      ),
-                    );
-                  },
+                'RoupasPet',
+                style: context.textTheme.titleMedium!.copyWith(color: context.colors.primary80),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  fm.Modular.to.pushNamed(paths.auth);
+                },
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: context.colors.main,
                 ),
               ),
             ],
-          ).applySpacing(spacing: 16),
-          floatingActionButton: const ShoppingCartFabButton(),
+          ),
+          backgroundColor: Colors.white,
         ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: BlocBuilder<ProductCubit, ProductState>(
+                bloc: _productCubit,
+                builder: (context, state) {
+                  if (state is SuccessState) {
+                    return GridView.builder(
+                      padding: const EdgeInsets.all(24),
+                      itemCount: state.products.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 180 / 200,
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                      ),
+                      itemBuilder: (context, index) => Product(
+                        product: state.products[index],
+                      ),
+                    );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: context.colors.main,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ).applySpacing(spacing: 16),
+        floatingActionButton: const ShoppingCartFabButton(),
       ),
     );
   }
@@ -141,7 +157,10 @@ class Product extends StatelessWidget {
           ),
           Text(
             product.price.toBRL,
-            style: context.textTheme.bodyLarge!.copyWith(color: context.colors.primary80),
+            style: context.textTheme.bodyLarge!.copyWith(
+              color: context.colors.primary80,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

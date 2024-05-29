@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:roupaspet/src/features/main/models/order_item_model.dart';
 
+import '../../models/order_model.dart';
 import '../../repositories/order_repository.dart';
 
 part 'order_state.dart';
@@ -39,5 +40,16 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  Future<void> getOrders() async {}
+  Future<void> getOrders() async {
+    emit(OrderLoading());
+
+    try {
+      await _orderRepository.getOrders().fold(
+            (data) => emit(OrderSuccess(data)),
+            (failure) => emit(OrderError(failure.message)),
+          );
+    } catch (e) {
+      emit(OrderError('Erro ao buscar pedidos'));
+    }
+  }
 }

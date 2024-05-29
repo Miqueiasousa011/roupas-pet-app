@@ -46,7 +46,7 @@ extension ContextExtension on BuildContext {
             ),
           ),
           behavior: SnackBarBehavior.floating,
-          duration: duration ?? const Duration(seconds: 5),
+          duration: duration ?? const Duration(seconds: 2),
         ),
       );
     }

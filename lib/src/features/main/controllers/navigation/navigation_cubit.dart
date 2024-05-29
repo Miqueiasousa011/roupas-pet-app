@@ -24,11 +24,11 @@ class NavigationCubit extends Cubit<NavidationState> {
         icon: Icons.shopping_bag_outlined,
         path: paths.orders,
       ),
-      NavigationModel(
-        title: 'Perfil',
-        icon: Icons.person_outline,
-        path: paths.profile,
-      ),
+      // NavigationModel(
+      //   title: 'Perfil',
+      //   icon: Icons.person_outline,
+      //   path: paths.profile,
+      // ),
     ];
   }
 }
