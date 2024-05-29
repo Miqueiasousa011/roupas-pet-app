@@ -101,14 +101,16 @@ class _FinalizeOrderPageState extends State<FinalizeOrderPage> {
             Expanded(
               child: OutlinedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(null);
                 },
                 child: const Text('Cancelar'),
               ),
             ),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop(selectedPaymentMethod);
+                },
                 child: const Text('Finalizar'),
               ),
             ),

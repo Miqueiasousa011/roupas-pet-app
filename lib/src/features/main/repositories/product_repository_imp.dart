@@ -23,7 +23,7 @@ class ProductRepositoryImp implements ProductRepository {
         (failure) => Failure(failure),
       );
     } catch (e) {
-      return const Failure(UnknownException('LOGIN ERROR'));
+      return const Failure(UnknownException(' ERROR'));
     }
   }
 }
