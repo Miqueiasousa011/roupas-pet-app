@@ -56,6 +56,27 @@ class _MyOrdersPageState extends State<MyOrdersPage> with UtilsMixin {
           body: Builder(
             builder: (context) {
               if (state is OrderSuccess) {
+                if (state.orders.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 100,
+                          color: context.colors.primary80,
+                        ),
+                        Text(
+                          'Nenhum pedido encontrado',
+                          style: context.textTheme.titleLarge!.copyWith(
+                            color: context.colors.primary80,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
                 final orders = state.orders;
                 return ListView.separated(
                   itemCount: orders.length,
